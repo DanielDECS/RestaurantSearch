@@ -29,7 +29,7 @@ export const Logo = styled.img`
 
 export const Map = styled.div`
   background-color: #8a4be6;
-  width: 100%;
+  width: 500px;
 `;
 
 export const CarouselTitle = styled.h1`
