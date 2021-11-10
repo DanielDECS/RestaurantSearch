@@ -50,7 +50,6 @@ const Home = () => {
                         <Card photo={restaurante} title="Nome do restaurante" />
                         <Card photo={restaurante} title="Nome do restaurante" />
                     </Carousel>
-                    <button onClick={() => setModalOpened(true)}>Abrir Modal</button>
                 </Search>
                 <RestaurantCard />
             </Container>
