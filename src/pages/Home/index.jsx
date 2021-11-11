@@ -1,18 +1,21 @@
 import React, { useState } from "react";
-import Slider from "react-slick";
+import { useSelector } from 'react-redux';
 
 import TextField, { Input } from '@material/react-text-field';
 import MaterialIcon from '@material/react-material-icon';
 
-import { Container, Carousel, Search, Logo, Wrapper, Map, CarouselTitle } from './styles';
+import { Container, Carousel, Search, Logo, Wrapper, CarouselTitle } from './styles';
 import logo from "../../assets/logo.svg";
 import restaurante from "../../assets/restaurante-fake.png";
-import { Card, RestaurantCard, Modal } from "../../components";
+import { Card, RestaurantCard, Modal, Map } from "../../components";
 
 
 const Home = () => {
     const [inputValue, setInputValue] = useState('');
-    const [modalOpened, setModalOpened] = useState(false);
+    const [query, setQuery] = useState(null);
+    const [placeId, setPlaceId] = useState(null);
+    const [modalOpened, setModalOpened] = useState(true);
+    const { restaurants, restaurantSelected } = useSelector((state) => state.restaurants);
 
     const settings = {
         dots: false,
@@ -24,6 +27,12 @@ const Home = () => {
         adaptiveHeight: true,
     };
 
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            setQuery(inputValue);
+        }
+    };
+
 
     return (
         <Wrapper>
@@ -33,28 +42,30 @@ const Home = () => {
                     <TextField
                         label='Pesquisar Restaurantes'
                         outlined
-                        trailingIcon={<MaterialIcon role="button" icon="search" />}
-                    >
-                        <Input value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+                        trailingIcon={<MaterialIcon role="button" icon="search" />}>
+                        <Input 
+                            value={inputValue} 
+                            onKeyPress={handleKeyPress} 
+                            onChange={(e) => setInputValue(e.target.value)} 
+                        />
                     </TextField>
-                    <CarouselTitle>
-                        Resultado
-                    </CarouselTitle>
+                    <CarouselTitle>Resultado</CarouselTitle>
                     <Carousel {...settings}>
-                        <Card photo={restaurante} title="Nome do restaurante" />
-                        <Card photo={restaurante} title="Nome do restaurante" />
-                        <Card photo={restaurante} title="Nome do restaurante" />
-                        <Card photo={restaurante} title="Nome do restaurante" />
-                        <Card photo={restaurante} title="Nome do restaurante" />
-                        <Card photo={restaurante} title="Nome do restaurante" />
-                        <Card photo={restaurante} title="Nome do restaurante" />
-                        <Card photo={restaurante} title="Nome do restaurante" />
+                        {restaurants.map((restaurant) => (
+                            <Card
+                                key={restaurant.place_id}
+                                photo={restaurant.photos ? restaurant.photos[0].getUrl() : restaurante} 
+                                title={restaurant.name} 
+                            />
+                        ))}
                     </Carousel>
                 </Search>
-                <RestaurantCard />
+                {restaurants.map((restaurant) => (
+                    <RestaurantCard restaurant={restaurant} />
+                ))}
             </Container>
-            <Map />
-            <Modal open={modalOpened} onClose={() => setModalOpened(!modalOpened)} />
+            <Map query={query} />
+            {/* Modal open={modalOpened} onClose={() => setModalOpened(!modalOpened)} */}
         </Wrapper>
     );
 };

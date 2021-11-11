@@ -27,11 +27,6 @@ export const Logo = styled.img`
   margin: 15px;
 `;
 
-export const Map = styled.div`
-  background-color: #8a4be6;
-  width: 500px;
-`;
-
 export const CarouselTitle = styled.h1`
   font-family: ${(props) => props.theme.fonts.regular};
   color: ${(props) => props.theme.colors.text};
@@ -43,7 +38,7 @@ export const CarouselTitle = styled.h1`
 
 export const Carousel = styled(Slider)`
   .slick-slide {
-    margin-right: 16px;
+    margin-right: 30px;
   }
 `;
 
